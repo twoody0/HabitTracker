@@ -6,6 +6,16 @@
 public class EntityBase
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="EntityBase"/> class.
+    /// </summary>
+    public EntityBase()
+    {
+        Id = Guid.NewGuid();
+        CreatedDate = DateTime.UtcNow;
+        ModifiedDate = DateTime.UtcNow;
+    }
+
+    /// <summary>
     /// Gets the unique identifier for the entity.
     /// </summary>
     public Guid Id { get; init; }
