@@ -15,6 +15,8 @@ public class EntityBase
         ModifiedDate = DateTime.UtcNow;
     }
 
+    private DateTime _modifiedDate;
+
     /// <summary>
     /// Gets the unique identifier for the entity.
     /// </summary>
@@ -28,5 +30,16 @@ public class EntityBase
     /// <summary>
     /// Gets or sets the modified date of the entity.
     /// </summary>
-    public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedDate
+    {
+        get => _modifiedDate;
+        set
+        {
+            if (value < CreatedDate)
+            {
+                throw new ArgumentException("The modified date cannot be earlier than the created date.");
+            }
+            _modifiedDate = value;
+        }
+    }
 }

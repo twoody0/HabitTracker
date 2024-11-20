@@ -25,4 +25,19 @@ public class EntityBaseTests
         Assert.InRange(entity.ModifiedDate, beforeCreation, afterCreation);
         Assert.NotEqual(Guid.Empty, entity.Id);
     }
+
+    /// <summary>
+    /// Tests that setting an invalid ModifiedDate throws an exception.
+    /// </summary>
+    [Fact]
+    public void Constructor_InvalidObjects_ThrowsException()
+    {
+        // Arrange
+        EntityBase entity = new();
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => entity.ModifiedDate = DateTime.UtcNow.AddDays(-1));
+    }
 }
