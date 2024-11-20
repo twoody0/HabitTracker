@@ -5,6 +5,8 @@
 /// </summary>
 public class EntityBase
 {
+    private DateTime _modifiedDate;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="EntityBase"/> class.
     /// </summary>
@@ -14,8 +16,6 @@ public class EntityBase
         CreatedDate = DateTime.UtcNow;
         ModifiedDate = DateTime.UtcNow;
     }
-
-    private DateTime _modifiedDate;
 
     /// <summary>
     /// Gets the unique identifier for the entity.
