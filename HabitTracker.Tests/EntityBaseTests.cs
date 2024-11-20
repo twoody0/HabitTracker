@@ -30,7 +30,7 @@ public class EntityBaseTests
     /// Tests that setting an invalid ModifiedDate throws an exception.
     /// </summary>
     [Fact]
-    public void Constructor_InvalidObjects_ThrowsException()
+    public void Constructor_InvalidModifiedDate_ThrowsException()
     {
         // Arrange
         EntityBase entity = new();
@@ -39,5 +39,24 @@ public class EntityBaseTests
 
         // Assert
         Assert.Throws<ArgumentException>(() => entity.ModifiedDate = DateTime.UtcNow.AddDays(-1));
+    }
+
+    /// <summary>
+    /// Tests that the modification history tracks modified dates correctly.
+    /// </summary>
+    [Fact]
+    public void ModificationHistory_ValidValues_ShouldTrackModifiedDates()
+    {
+        // Arrange
+        EntityBase entity = new();
+        DateTime initialModifiedDate = entity.ModifiedDate;
+
+        // Act
+        DateTime newModifiedDate = initialModifiedDate.AddDays(1);
+        entity.ModifiedDate = newModifiedDate;
+
+        // Assert
+        Assert.Equal(2, entity.ModificationHistory.Count);
+        Assert.Contains(initialModifiedDate, entity.ModificationHistory);
     }
 }

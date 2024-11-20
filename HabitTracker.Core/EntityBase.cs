@@ -6,6 +6,7 @@
 public class EntityBase
 {
     private DateTime _modifiedDate;
+    private readonly List<DateTime> _modificationHistory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EntityBase"/> class.
@@ -14,6 +15,7 @@ public class EntityBase
     {
         Id = Guid.NewGuid();
         CreatedDate = DateTime.UtcNow;
+        _modificationHistory = [];
         ModifiedDate = DateTime.UtcNow;
     }
 
@@ -39,7 +41,13 @@ public class EntityBase
             {
                 throw new ArgumentException("The modified date cannot be earlier than the created date.");
             }
+            _modificationHistory.Add(value);
             _modifiedDate = value;
         }
     }
+
+    /// <summary>
+    /// Gets the history of modification dates.
+    /// </summary>
+    public IReadOnlyList<DateTime> ModificationHistory => _modificationHistory.AsReadOnly();
 }
