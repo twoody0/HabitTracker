@@ -3,13 +3,8 @@
 /// <summary>
 /// Represents a progress log for a habit.
 /// </summary>
-public class ProgressLog
+public class ProgressLog : EntityBase
 {
-    /// <summary>
-    /// Gets the unique identifier for the progress log.
-    /// </summary>
-    public int Id { get; init; }
-
     /// <summary>
     /// Gets the date of the progress log entry.
     /// </summary>
