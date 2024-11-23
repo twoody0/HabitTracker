@@ -15,7 +15,7 @@ public class EntityBaseTests
     {
         // Arrange
         DateTime beforeCreation = DateTime.UtcNow;
-        EntityBase entity = new();
+        Habit entity = new("whatever");
         DateTime afterCreation = DateTime.UtcNow;
 
         // Act
@@ -33,7 +33,7 @@ public class EntityBaseTests
     public void Constructor_InvalidModifiedDate_ThrowsException()
     {
         // Arrange
-        EntityBase entity = new();
+        Habit entity = new("whatever");
 
         // Act
 
@@ -48,7 +48,7 @@ public class EntityBaseTests
     public void ModificationHistory_ValidValues_ShouldTrackModifiedDates()
     {
         // Arrange
-        EntityBase entity = new();
+        Habit entity = new("whatever");
         DateTime initialModifiedDate = entity.ModifiedDate;
 
         // Act

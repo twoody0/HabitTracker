@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the base entity with common properties.
 /// </summary>
-public class EntityBase
+public abstract class EntityBase
 {
     private DateTime _modifiedDate;
     private readonly List<DateTime> _modificationHistory;

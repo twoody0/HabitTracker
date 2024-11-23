@@ -3,6 +3,6 @@
 /// <summary>
 /// Represents a progress log for a habit.
 /// </summary>
-public class ProgressLog
+public class ProgressLog : EntityBase
 {
 }
