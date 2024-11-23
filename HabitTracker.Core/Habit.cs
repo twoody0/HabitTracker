@@ -18,7 +18,7 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the progress logs of the habit.
     /// </summary>
-    public List<ProgressLogs> ProgressLogs { get; set; } = [];
+    public IReadOnlyList<ProgressLog> ProgressLogs { get; set; } = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Habit"/> class.
