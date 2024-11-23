@@ -19,7 +19,7 @@ public class ProgressLogTests
         string note = "Test note";
 
         // Act
-        ProgressLog progressLog = new()
+        ProgressLog progressLog = new(DateTime.Now)
         {
             Date = date,
             IsCompleted = isCompleted,

@@ -6,6 +6,7 @@
 public class Habit : EntityBase
 {
     private readonly List<ProgressLog> _progressLogs = [];
+    private int _frequency;
 
     /// <summary>
     /// Gets or sets the name of the habit.
@@ -15,7 +16,18 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the frequency of the habit.
     /// </summary>
-    public int Frequency { get; set; }
+    public int Frequency
+    {
+        get => _frequency;
+        set
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentException("The frequency must be greater than zero.", nameof(value));
+            }
+            _frequency = value;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the progress logs of the habit.
@@ -53,11 +65,13 @@ public class Habit : EntityBase
     {
         ProgressLog? log = _progressLogs.FirstOrDefault(item => item.Date == progressLog.Date);
 
-        if (log is not null)
+        if (log is null)
         {
-            log.IsCompleted = progressLog.IsCompleted;
-            log.Note = progressLog.Note;
-            log.ModifiedDate = DateTime.UtcNow;
+            throw new InvalidOperationException($"No progress log found for date: {progressLog.Date}");
         }
+
+        log.IsCompleted = progressLog.IsCompleted;
+        log.Note = progressLog.Note;
+        log.ModifiedDate = DateTime.UtcNow;
     }
 }

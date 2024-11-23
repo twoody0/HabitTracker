@@ -61,7 +61,7 @@ public class HabitTests
     {
         // Arrange
         Habit habit = new("Coding");
-        ProgressLog progressLog = new()
+        ProgressLog progressLog = new(DateTime.Now)
         {
             Date = DateTime.UtcNow,
             IsCompleted = true,
@@ -85,7 +85,7 @@ public class HabitTests
         // Arrange
         Habit habit = new("Coding");
         DateTime originalDate = DateTime.UtcNow;
-        ProgressLog progressLog = new()
+        ProgressLog progressLog = new(DateTime.Now)
         {
             Date = originalDate,
             IsCompleted = true,
@@ -93,7 +93,7 @@ public class HabitTests
         };
         habit.AddProgressLog(progressLog);
 
-        ProgressLog updatedLog = new()
+        ProgressLog updatedLog = new(DateTime.Now)
         {
             Date = originalDate,
             IsCompleted = false,
@@ -120,23 +120,22 @@ public class HabitTests
     {
         // Arrange
         Habit habit = new("Coding");
-        ProgressLog progressLog = new()
+        ProgressLog progressLog = new(DateTime.Now)
         {
             Date = DateTime.UtcNow,
             IsCompleted = true,
             Note = "Learning C#"
         };
         habit.AddProgressLog(progressLog);
-        ProgressLog updatedLog = new()
+        ProgressLog updatedLog = new(DateTime.Now)
         {
             Date = DateTime.UtcNow.AddDays(-1),
             IsCompleted = false,
             Note = "Learning C# and .NET"
         };
-        // Act
-        habit.UpdateProgressLog(updatedLog);
 
-        // Assert
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => habit.UpdateProgressLog(updatedLog));
         Assert.Single(habit.ProgressLogs);
         Assert.Equal(progressLog, habit.ProgressLogs[0]);
     }
