@@ -40,23 +40,4 @@ public class EntityBaseTests
         // Assert
         Assert.Throws<ArgumentException>(() => entity.ModifiedDate = DateTime.UtcNow.AddDays(-1));
     }
-
-    /// <summary>
-    /// Tests that the modification history tracks modified dates correctly.
-    /// </summary>
-    [Fact]
-    public void ModificationHistory_ValidValues_ShouldTrackModifiedDates()
-    {
-        // Arrange
-        Habit entity = new("whatever");
-        DateTime initialModifiedDate = entity.ModifiedDate;
-
-        // Act
-        DateTime newModifiedDate = initialModifiedDate.AddDays(1);
-        entity.ModifiedDate = newModifiedDate;
-
-        // Assert
-        Assert.Equal(2, entity.ModificationHistory.Count);
-        Assert.Contains(initialModifiedDate, entity.ModificationHistory);
-    }
 }

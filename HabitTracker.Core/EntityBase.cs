@@ -6,7 +6,6 @@
 public abstract class EntityBase
 {
     private DateTime _modifiedDate;
-    private readonly List<DateTime> _modificationHistory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EntityBase"/> class.
@@ -15,7 +14,6 @@ public abstract class EntityBase
     {
         Id = Guid.NewGuid();
         CreatedDate = DateTime.UtcNow;
-        _modificationHistory = [];
         ModifiedDate = DateTime.UtcNow;
     }
 
@@ -45,9 +43,4 @@ public abstract class EntityBase
             _modifiedDate = value;
         }
     }
-
-    /// <summary>
-    /// Gets the history of modification dates.
-    /// </summary>
-    public IReadOnlyList<DateTime> ModificationHistory => _modificationHistory.AsReadOnly();
 }
