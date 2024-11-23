@@ -52,4 +52,92 @@ public class HabitTests
         // Assert
         Assert.Throws<ArgumentException>(() => new Habit(habitName));
     }
+
+    /// <summary>
+    /// Tests that a valid progress log is added to the habit.
+    /// </summary>
+    [Fact]
+    public void AddProgressLog_ValidProgressLog_AddsLog()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        ProgressLog progressLog = new()
+        {
+            Date = DateTime.UtcNow,
+            IsCompleted = true,
+            Note = "Learning C#"
+        };
+
+        // Act
+        habit.AddProgressLog(progressLog);
+
+        // Assert
+        Assert.Single(habit.ProgressLogs);
+        Assert.Equal(progressLog, habit.ProgressLogs[0]);
+    }
+
+    /// <summary>
+    /// Tests that an existing progress log is updated in the habit.
+    /// </summary>
+    [Fact]
+    public void UpdateProgressLog_ExistingLog_UpdatesLog()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime originalDate = DateTime.UtcNow;
+        ProgressLog progressLog = new()
+        {
+            Date = originalDate,
+            IsCompleted = true,
+            Note = "Learning C#"
+        };
+        habit.AddProgressLog(progressLog);
+
+        ProgressLog updatedLog = new()
+        {
+            Date = originalDate,
+            IsCompleted = false,
+            Note = "Learning C# and .NET"
+        };
+
+        // Act
+        habit.UpdateProgressLog(updatedLog);
+
+        // Assert
+        Assert.Single(habit.ProgressLogs);
+        ProgressLog result = habit.ProgressLogs[0];
+        Assert.Equal(updatedLog.Date, result.Date);
+        Assert.Equal(updatedLog.IsCompleted, result.IsCompleted);
+        Assert.Equal(updatedLog.Note, result.Note);
+        Assert.True(result.ModifiedDate > originalDate);
+    }
+
+    /// <summary>
+    /// Tests that a non-existing progress log is not updated in the habit.
+    /// </summary>
+    [Fact]
+    public void UpdateProgressLog_NonExistingLog_DoesNotUpdate()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        ProgressLog progressLog = new()
+        {
+            Date = DateTime.UtcNow,
+            IsCompleted = true,
+            Note = "Learning C#"
+        };
+        habit.AddProgressLog(progressLog);
+        ProgressLog updatedLog = new()
+        {
+            Date = DateTime.UtcNow.AddDays(-1),
+            IsCompleted = false,
+            Note = "Learning C# and .NET"
+        };
+        // Act
+        habit.UpdateProgressLog(updatedLog);
+
+        // Assert
+        Assert.Single(habit.ProgressLogs);
+        Assert.Equal(progressLog, habit.ProgressLogs[0]);
+    }
 }

@@ -5,6 +5,8 @@
 /// </summary>
 public class Habit : EntityBase
 {
+    private readonly List<ProgressLog> _progressLogs = [];
+
     /// <summary>
     /// Gets or sets the name of the habit.
     /// </summary>
@@ -18,7 +20,7 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the progress logs of the habit.
     /// </summary>
-    public List<ProgressLog> ProgressLogs { get; set; } = [];
+    public IReadOnlyList<ProgressLog> ProgressLogs => _progressLogs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Habit"/> class.
@@ -32,5 +34,30 @@ public class Habit : EntityBase
             throw new ArgumentException($"{nameof(habitName)} cannot be null or white space", nameof(habitName));
         }
         Name = habitName;
+    }
+
+    /// <summary>
+    /// Adds a progress log to the habit.
+    /// </summary>
+    /// <param name="progressLog">The progress log to add.</param>
+    public void AddProgressLog(ProgressLog progressLog)
+    {
+        _progressLogs.Add(progressLog);
+    }
+
+    /// <summary>
+    /// Updates an existing progress log of the habit.
+    /// </summary>
+    /// <param name="progressLog">The progress log to update.</param>
+    public void UpdateProgressLog(ProgressLog progressLog)
+    {
+        ProgressLog? log = _progressLogs.FirstOrDefault(item => item.Date == progressLog.Date);
+
+        if (log is not null)
+        {
+            log.IsCompleted = progressLog.IsCompleted;
+            log.Note = progressLog.Note;
+            log.ModifiedDate = DateTime.UtcNow;
+        }
     }
 }
