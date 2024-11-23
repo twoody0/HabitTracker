@@ -39,7 +39,6 @@ public abstract class EntityBase
             {
                 throw new ArgumentException("The modified date cannot be earlier than the created date.");
             }
-            _modificationHistory.Add(value);
             _modifiedDate = value;
         }
     }
