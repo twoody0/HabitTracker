@@ -113,7 +113,7 @@ public class HabitTests
     }
 
     /// <summary>
-    /// Tests that a non-existing progress log is not updated in the habit.
+    /// Tests that a non-existing progress log is not updated in the habit and throws an InvalidOperationException.
     /// </summary>
     [Fact]
     public void UpdateProgressLog_NonExistingLog_DoesNotUpdate()
@@ -126,6 +126,8 @@ public class HabitTests
             IsCompleted = true,
             Note = "Learning C#"
         };
+
+        // Act
         habit.AddProgressLog(progressLog);
         ProgressLog updatedLog = new(DateTime.Now)
         {
@@ -134,7 +136,7 @@ public class HabitTests
             Note = "Learning C# and .NET"
         };
 
-        // Act & Assert
+        // Assert
         Assert.Throws<InvalidOperationException>(() => habit.UpdateProgressLog(updatedLog));
         Assert.Single(habit.ProgressLogs);
         Assert.Equal(progressLog, habit.ProgressLogs[0]);
