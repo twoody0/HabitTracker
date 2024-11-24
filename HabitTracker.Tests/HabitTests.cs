@@ -141,4 +141,52 @@ public class HabitTests
         Assert.Single(habit.ProgressLogs);
         Assert.Equal(progressLog, habit.ProgressLogs[0]);
     }
+
+    /// <summary>
+    /// Tests that the Frequency property is set correctly.
+    /// </summary>
+    [Fact]
+    public void Frequency_ValidFrequency_SetsFrequency()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        int frequency = 3;
+
+        // Act
+        habit.Frequency = frequency;
+
+        // Assert
+        Assert.Equal(frequency, habit.Frequency);
+    }
+
+    /// <summary>
+    /// Tests that setting the Frequency property to zero throws an ArgumentException.
+    /// </summary>
+    [Fact]
+    public void Frequency_ZeroFrequency_ThrowsException()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => habit.Frequency = 0);
+    }
+
+    /// <summary>
+    /// Tests that the ProgressLogs property returns an empty list when no progress logs are added.
+    /// </summary>
+    [Fact]
+    public void ProgressLogs_EmptyList_ReturnsEmptyList()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+        IReadOnlyList<ProgressLog> progressLogs = habit.ProgressLogs;
+
+        // Assert
+        Assert.Empty(progressLogs);
+    }
 }
