@@ -61,12 +61,7 @@ public class HabitTests
     {
         // Arrange
         Habit habit = new("Coding");
-        ProgressLog progressLog = new(DateTime.Now)
-        {
-            Date = DateTime.UtcNow,
-            IsCompleted = true,
-            Note = "Learning C#"
-        };
+        ProgressLog progressLog = new(DateTime.UtcNow, true, "Learning C#");
 
         // Act
         habit.AddProgressLog(progressLog);
@@ -85,20 +80,10 @@ public class HabitTests
         // Arrange
         Habit habit = new("Coding");
         DateTime originalDate = DateTime.UtcNow;
-        ProgressLog progressLog = new(DateTime.Now)
-        {
-            Date = originalDate,
-            IsCompleted = true,
-            Note = "Learning C#"
-        };
+        ProgressLog progressLog = new(originalDate, true, "Learning C#");
         habit.AddProgressLog(progressLog);
 
-        ProgressLog updatedLog = new(DateTime.Now)
-        {
-            Date = originalDate,
-            IsCompleted = false,
-            Note = "Learning C# and .NET"
-        };
+        ProgressLog updatedLog = new(originalDate, false, "Learning C# and .NET");
 
         // Act
         habit.UpdateProgressLog(updatedLog);
@@ -120,20 +105,13 @@ public class HabitTests
     {
         // Arrange
         Habit habit = new("Coding");
-        ProgressLog progressLog = new(DateTime.Now)
-        {
-            Date = DateTime.UtcNow,
-            IsCompleted = true,
-            Note = "Learning C#"
-        };
+        ProgressLog progressLog = new(DateTime.UtcNow, true, "Learning C#");
 
         // Act
         habit.AddProgressLog(progressLog);
-        ProgressLog updatedLog = new(DateTime.Now)
+        ProgressLog updatedLog = new(DateTime.UtcNow, false, "Learning C# and .NET")
         {
             Date = DateTime.UtcNow.AddDays(-1),
-            IsCompleted = false,
-            Note = "Learning C# and .NET"
         };
 
         // Assert

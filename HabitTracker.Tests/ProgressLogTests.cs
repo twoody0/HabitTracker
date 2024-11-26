@@ -19,12 +19,7 @@ public class ProgressLogTests
         string note = "Test note";
 
         // Act
-        ProgressLog progressLog = new(DateTime.Now)
-        {
-            Date = date,
-            IsCompleted = isCompleted,
-            Note = note
-        };
+        ProgressLog progressLog = new(date, isCompleted, note);
 
         // Assert
         Assert.Equal(date, progressLog.Date);

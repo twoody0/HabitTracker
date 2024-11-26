@@ -6,17 +6,30 @@
 public class ProgressLog : EntityBase
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProgressLog"/> class with the specified date.
+    /// Initializes a new instance of the <see cref="ProgressLog"/> class with the specified date, completion status, and note.
     /// </summary>
     /// <param name="date">The date of the progress log entry.</param>
+    /// <param name="isCompleted">Indicates whether the habit was completed on this date.</param>
+    /// <param name="note">An optional note for the progress log entry.</param>
     /// <exception cref="ArgumentException">Thrown when the date is in the future.</exception>
-    public ProgressLog(DateTime date)
+    public ProgressLog(DateTime date, bool isCompleted, string? note)
     {
         if (date > DateTime.UtcNow)
         {
             throw new ArgumentException("The date cannot be in the future.", nameof(date));
         }
         Date = date;
+        IsCompleted = isCompleted;
+        Note = note;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProgressLog"/> class with the specified date and completion status.
+    /// </summary>
+    /// <param name="date">The date of the progress log entry.</param>
+    /// <param name="isCompleted">Indicates whether the habit was completed on this date.</param>
+    public ProgressLog(DateTime date, bool isCompleted) : this(date, isCompleted, null)
+    {
     }
 
     /// <summary>
