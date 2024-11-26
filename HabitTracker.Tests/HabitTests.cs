@@ -72,10 +72,10 @@ public class HabitTests
     }
 
     /// <summary>
-    /// Tests that an existing progress log is updated in the habit.
+    /// Tests that an existing progress log is updated in the habit with new values.
     /// </summary>
     [Fact]
-    public void UpdateProgressLog_ExistingLog_UpdatesLog()
+    public void UpdateProgressLog_WithNewValues_UpdatesLog()
     {
         // Arrange
         Habit habit = new("Coding");
@@ -94,6 +94,32 @@ public class HabitTests
         Assert.Equal(updatedLog.Date, result.Date);
         Assert.Equal(updatedLog.IsCompleted, result.IsCompleted);
         Assert.Equal(updatedLog.Note, result.Note);
+        Assert.True(result.ModifiedDate > originalDate);
+    }
+
+    /// <summary>
+    /// Tests that an existing progress log is updated in the habit with modified existing log.
+    /// </summary>
+    [Fact]
+    public void UpdateProgressLog_WithModifiedExistingLog_UpdatesLog()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime originalDate = DateTime.UtcNow;
+        ProgressLog progressLog = new(originalDate, true, "Learning C#");
+        habit.AddProgressLog(progressLog);
+
+        // Act
+        progressLog.IsCompleted = false;
+        progressLog.Note = "Learning C# and .NET";
+        habit.UpdateProgressLog(progressLog);
+
+        // Assert
+        Assert.Single(habit.ProgressLogs);
+        ProgressLog result = habit.ProgressLogs[0];
+        Assert.Equal(progressLog.Date, result.Date);
+        Assert.Equal(progressLog.IsCompleted, result.IsCompleted);
+        Assert.Equal(progressLog.Note, result.Note);
         Assert.True(result.ModifiedDate > originalDate);
     }
 
