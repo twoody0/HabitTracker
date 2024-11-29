@@ -13,6 +13,24 @@ public class Habit : EntityBase
     /// </summary>
     public string Name { get; set; }
 
+    private DateTime _startDate;
+
+    /// <summary>
+    /// Gets or sets the start date of the habit.
+    /// </summary>
+    public DateTime StartDate
+    {
+        get => _startDate;
+        set
+        {
+            if (value > DateTime.UtcNow)
+            {
+                throw new ArgumentException("Start date cannot be in the future.", nameof(value));
+            }
+            _startDate = value.Date;
+        }
+    }
+
     /// <summary>
     /// Gets or sets the frequency of the habit.
     /// </summary>
@@ -38,14 +56,17 @@ public class Habit : EntityBase
     /// Initializes a new instance of the <see cref="Habit"/> class.
     /// </summary>
     /// <param name="habitName">The name of the habit.</param>
+    /// <param name="startDate"></param>
     /// <exception cref="ArgumentException">Thrown when the habit name is null or white space.</exception>
-    public Habit(string habitName)
+    public Habit(string habitName, DateTime startDate)
     {
         if (string.IsNullOrWhiteSpace(habitName))
         {
             throw new ArgumentException($"{nameof(habitName)} cannot be null or white space", nameof(habitName));
         }
+
         Name = habitName;
+        StartDate = startDate;
     }
 
     /// <summary>
@@ -54,8 +75,32 @@ public class Habit : EntityBase
     /// <param name="progressLog">The progress log to add.</param>
     public void AddProgressLog(ProgressLog progressLog)
     {
+        if (progressLog.Date < StartDate)
+        {
+            throw new ArgumentException("Progress log date cannot be before the habit's start date.");
+        }
+        if (progressLog.Date > DateTime.UtcNow)
+        {
+            throw new ArgumentException("Progress log date cannot be in the future.");
+        }
+
         ArgumentNullException.ThrowIfNull(progressLog);
         _progressLogs.Add(progressLog);
+    }
+
+    /// <summary>
+    /// Removes a progress log from the habit.
+    /// </summary>
+    /// <param name="date">The date of the progress log to remove.</param>
+    /// <exception cref="InvalidOperationException">Thrown when no progress log is found for the specified date.</exception>
+    public void RemoveProgressLog(DateTime date)
+    {
+        ProgressLog? log = _progressLogs.FirstOrDefault(item => item.Date == date);
+        if (log is null)
+        {
+            throw new InvalidOperationException($"No progress log found for date: {date}");
+        }
+        _progressLogs.Remove(log);
     }
 
     /// <summary>
