@@ -102,4 +102,35 @@ public class Habit : EntityBase
         int completedDays = _progressLogs.Count(log => log.Date.Date >= startDate && log.Date.Date <= endDate && log.IsCompleted);
         return (double)completedDays / totalDays * 100;
     }
+
+    /// <summary>
+    /// Gets the current streak of completed habit logs up to the specified date.
+    /// </summary>
+    /// <param name="date">The date up to which the streak is calculated.</param>
+    /// <returns>The number of consecutive days the habit was completed up to the specified date.</returns>
+    public int GetStreak(DateTime date)
+    {
+        date = date.Date;
+        int streak = 0;
+        int currentStreak = 0;
+        ProgressLog? previousLog = null;
+        foreach (ProgressLog log in _progressLogs.Where(log => log.Date.Date <= date).OrderByDescending(log => log.Date))
+        {
+            if (previousLog is not null && (previousLog.Date - log.Date).Days > 1)
+            {
+                break;
+            }
+            if (log.IsCompleted)
+            {
+                currentStreak++;
+            }
+            else
+            {
+                streak = Math.Max(streak, currentStreak);
+                currentStreak = 0;
+            }
+            previousLog = log;
+        }
+        return Math.Max(streak, currentStreak);
+    }
 }

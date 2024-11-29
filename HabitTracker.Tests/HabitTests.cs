@@ -323,4 +323,104 @@ public class HabitTests
         // Assert
         Assert.Equal(actualRate, completionRate, 2);
     }
+
+    /// <summary>
+    /// Tests that the GetStreak method returns zero when there are no progress logs.
+    /// </summary>
+    [Fact]
+    public void GetStreak_NoLogs_ReturnsZero()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+        int streak = habit.GetStreak(DateTime.UtcNow);
+
+        // Assert
+        Assert.Equal(0, streak);
+    }
+
+    /// <summary>
+    /// Tests that the GetStreak method returns the correct streak when all logs are completed.
+    /// </summary>
+    [Fact]
+    public void GetStreak_AllLogsCompleted_ReturnsStreak()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+
+        habit.AddProgressLog(new(today, true));
+        habit.AddProgressLog(new(today.AddDays(-1), true));
+        habit.AddProgressLog(new(today.AddDays(-2), true));
+
+        // Act
+        int streak = habit.GetStreak(today);
+
+        // Assert
+        Assert.Equal(3, streak);
+    }
+
+    /// <summary>
+    /// Tests that the GetStreak method returns zero when all logs are not completed.
+    /// </summary>
+    [Fact]
+    public void GetStreak_AllLogsNotCompleted_ReturnsZero()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+
+        habit.AddProgressLog(new(today, false));
+        habit.AddProgressLog(new(today.AddDays(-1), false));
+        habit.AddProgressLog(new(today.AddDays(-2), false));
+
+        // Act
+        int streak = habit.GetStreak(today);
+
+        // Assert
+        Assert.Equal(0, streak);
+    }
+
+    /// <summary>
+    /// Tests that the GetStreak method returns the correct streak when there are mixed progress logs.
+    /// </summary>
+    [Fact]
+    public void GetStreak_MixedLogs_ReturnsStreak()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+
+        habit.AddProgressLog(new(today, true));
+        habit.AddProgressLog(new(today.AddDays(-1), false));
+        habit.AddProgressLog(new(today.AddDays(-2), true));
+        // Act
+        int streak = habit.GetStreak(today);
+
+        // Assert
+        Assert.Equal(1, streak);
+    }
+
+    /// <summary>
+    /// Tests that the GetStreak method returns the correct streak when logs are completed in the past.
+    /// </summary>
+    [Fact]
+    public void GetStreak_LogsCompleted_ReturnsStreak()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+
+        habit.AddProgressLog(new(today, true));
+        habit.AddProgressLog(new(today.AddDays(-1), true));
+        habit.AddProgressLog(new(today.AddDays(-2), true));
+        habit.AddProgressLog(new(today.AddDays(-4), true));
+
+        // Act
+        int streak = habit.GetStreak(today);
+
+        // Assert
+        Assert.Equal(3, streak);
+    }
 }
