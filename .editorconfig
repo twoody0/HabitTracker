@@ -4,5 +4,7 @@ dotnet_diagnostic.IDE0160.severity = none
 # IDE0270: Use coalesce expression
 dotnet_diagnostic.IDE0270.severity = none
 
+dotnet_diagnostic.IDE0046.severity = none
+
 ﻿[*Tests.cs]
 dotnet_diagnostic.CA1707.severity = none

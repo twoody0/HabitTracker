@@ -54,6 +54,7 @@ public class Habit : EntityBase
     /// <param name="progressLog">The progress log to add.</param>
     public void AddProgressLog(ProgressLog progressLog)
     {
+        ArgumentNullException.ThrowIfNull(progressLog);
         _progressLogs.Add(progressLog);
     }
 
@@ -73,5 +74,32 @@ public class Habit : EntityBase
         log.IsCompleted = progressLog.IsCompleted;
         log.Note = progressLog.Note;
         log.ModifiedDate = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Gets the completion rate of the habit within a specified date range.
+    /// </summary>
+    /// <param name="startDate">The start date of the range.</param>
+    /// <param name="endDate">The end date of the range.</param>
+    /// <returns>The completion rate as a double.</returns>
+    /// <exception cref="ArgumentException">Thrown when the start date is later than the end date.</exception>
+    public double GetCompletionRate(DateTime startDate, DateTime endDate)
+    {
+        if (startDate > endDate)
+        {
+            throw new ArgumentException("The start date cannot be later than the end date.", nameof(startDate));
+        }
+
+        startDate = startDate.Date;
+        endDate = endDate.Date;
+
+        int totalDays = (endDate - startDate).Days + 1;
+        if (totalDays == 0)
+        {
+            return 0;
+        }
+
+        int completedDays = _progressLogs.Count(log => log.Date.Date >= startDate && log.Date.Date <= endDate && log.IsCompleted);
+        return (double)completedDays / totalDays * 100;
     }
 }

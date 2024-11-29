@@ -72,6 +72,21 @@ public class HabitTests
     }
 
     /// <summary>
+    /// Tests that adding a null progress log throws an ArgumentNullException.
+    /// </summary>
+    [Fact]
+    public void AddProgressLog_NullLog_ThrowsException()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(() => habit.AddProgressLog(null!));
+    }
+
+    /// <summary>
     /// Tests that an existing progress log is updated in the habit with new values.
     /// </summary>
     [Fact]
@@ -192,5 +207,120 @@ public class HabitTests
 
         // Assert
         Assert.Empty(progressLogs);
+    }
+
+    /// <summary>
+    /// Tests that the ProgressLogs property returns the added logs.
+    /// </summary>
+    [Fact]
+    public void ProgressLogs_AddedLogs_ReturnsLogs()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        ProgressLog progressLog1 = new(DateTime.UtcNow, true, "Learning C#");
+        ProgressLog progressLog2 = new(DateTime.UtcNow.AddDays(-1), false, "Learning .NET");
+        habit.AddProgressLog(progressLog1);
+        habit.AddProgressLog(progressLog2);
+        // Act
+        IReadOnlyList<ProgressLog> progressLogs = habit.ProgressLogs;
+        // Assert
+        Assert.Equal(2, progressLogs.Count);
+        Assert.Equal(progressLog1, progressLogs[0]);
+        Assert.Equal(progressLog2, progressLogs[1]);
+    }
+
+    /// <summary>
+    /// Tests that the GetCompletionRate method returns zero when there are no progress logs.
+    /// </summary>
+    [Fact]
+    public void GetCompletionRate_NoLogs_ReturnsZero()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+        double completionRate = habit.GetCompletionRate(DateTime.UtcNow, DateTime.UtcNow);
+
+        // Assert
+        Assert.Equal(0, completionRate);
+    }
+
+    /// <summary>
+    /// Tests that the GetCompletionRate method throws an ArgumentException when the start date is later than the end date.
+    /// </summary>
+    [Fact]
+    public void GetCompletionRate_StartDateLaterThanEndDate_ThrowsException()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => habit.GetCompletionRate(DateTime.UtcNow.AddDays(1), DateTime.UtcNow));
+    }
+
+    /// <summary>
+    /// Tests that the GetCompletionRate method returns one when all progress logs are completed.
+    /// </summary>
+    [Fact]
+    public void GetCompletionRate_AllLogsCompleted_ReturnsOneHundred()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+        habit.AddProgressLog(new(today, true));
+        habit.AddProgressLog(new(today.AddDays(-1), true));
+        habit.AddProgressLog(new(today.AddDays(-2), true));
+
+        // Act
+        double completionRate = habit.GetCompletionRate(today.AddDays(-2), today);
+
+        // Assert
+        Assert.Equal(100, completionRate, 2);
+    }
+
+    /// <summary>
+    /// Tests that the GetCompletionRate method returns zero when all progress logs are not completed.
+    /// </summary>
+    [Fact]
+    public void GetCompletionRate_AllLogsNotCompleted_ReturnsZero()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+        DateTime today = DateTime.UtcNow.Date;
+        habit.AddProgressLog(new(today, false));
+        habit.AddProgressLog(new(today.AddDays(-1), false));
+        habit.AddProgressLog(new(today.AddDays(-2), false));
+
+        // Act
+        double completionRate = habit.GetCompletionRate(today.AddDays(-2), today);
+
+        // Assert
+        Assert.Equal(0, completionRate);
+    }
+
+    /// <summary>
+    /// Tests that the GetCompletionRate method returns the correct rate when there are mixed progress logs.
+    /// </summary>
+    [Fact]
+    public void GetCompletionRate_MixedLogs_ReturnsCorrectRate()
+    {
+        // Arrange
+        Habit habit = new("Coding");
+
+        DateTime today = DateTime.UtcNow.Date;
+
+        habit.AddProgressLog(new(today, true));
+        habit.AddProgressLog(new(today.AddDays(-1), false));
+        habit.AddProgressLog(new(today.AddDays(-2), true));
+
+        double actualRate = 2.0 / 3.0 * 100;
+
+        // Act
+        double completionRate = habit.GetCompletionRate(today.AddDays(-2), today);
+
+        // Assert
+        Assert.Equal(actualRate, completionRate, 2);
     }
 }
