@@ -482,52 +482,24 @@ public class HabitTests
     }
 
     /// <summary>
-    /// Tests that the GetHabitsByCategory method throws an ArgumentException when the category is null.
+    /// Tests that the GetHabitsByCategory method throws an ArgumentException when the category is null, empty or white space.
     /// </summary>
     [Fact]
-    public void GetHabitsByCategory_NullCategory_ThrowsException()
+    public void GetHabitsByCategory_InvalidCategory_ThrowsException()
     {
         // Arrange
-        string category = null!;
-        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
-        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), "Personal Development");
-        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), "Health");
+        List<Habit> habits =
+        [
+            new Habit("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development"),
+            new Habit("Reading", DateTime.UtcNow.AddDays(-5), "Personal Development"),
+            new Habit("Exercise", DateTime.UtcNow.AddDays(-5), "Health"),
+        ];
 
         // Act
 
         // Assert
-        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory([habit1, habit2, habit3], category));
-    }
-
-    /// <summary>
-    /// Tests that the GetHabitsByCategory method throws an ArgumentException when the category is empty.
-    /// </summary>
-    [Fact]
-    public void GetHabitsByCategory_EmptyCategory_ThrowsException()
-    {
-        // Arrange
-        string category = " ";
-        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
-        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), "Personal Development");
-        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), "Health");
-
-        // Act
-
-        // Assert
-        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory([habit1, habit2, habit3], category));
-    }
-
-    /// <summary>
-    /// Tests that the GetHabitsByCategory method returns an empty list when no habits are provided.
-    /// </summary>
-    [Fact]
-    public void GetHabitsByCategory_EmptyList_ReturnsEmptyList()
-    {
-        // Arrange
-        string category = "Personal Development";
-        // Act
-        List<Habit> habits = Habit.GetHabitsByCategory([], category);
-        // Assert
-        Assert.Empty(habits);
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory(habits, null!));
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory(habits, ""));
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory(habits, " "));
     }
 }

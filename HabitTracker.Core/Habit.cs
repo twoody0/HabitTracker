@@ -211,4 +211,13 @@ public class Habit : EntityBase
 
         return habits.Where(h => h.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
     }
+
+    //public static List<Habit> GetHabitsByCategory(string category)
+    //{
+    //    if (string.IsNullOrWhiteSpace(category))
+    //    {
+    //        throw new ArgumentException("Category cannot be null or white space.", nameof(category));
+    //    }
+    //    return habits.Where(h => h.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+    //}
 }
