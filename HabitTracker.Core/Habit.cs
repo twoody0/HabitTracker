@@ -13,6 +13,11 @@ public class Habit : EntityBase
     /// </summary>
     public string Name { get; set; }
 
+    /// <summary>
+    /// Gets or sets the category of the habit.
+    /// </summary>
+    public string Category { get; set; }
+
     private DateTime _startDate;
 
     /// <summary>
@@ -58,15 +63,27 @@ public class Habit : EntityBase
     /// <param name="habitName">The name of the habit.</param>
     /// <param name="startDate"></param>
     /// <exception cref="ArgumentException">Thrown when the habit name is null or white space.</exception>
-    public Habit(string habitName, DateTime startDate)
+    /// <param name="category"></param>
+    public Habit(string habitName, DateTime startDate, string category)
     {
         if (string.IsNullOrWhiteSpace(habitName))
         {
             throw new ArgumentException($"{nameof(habitName)} cannot be null or white space", nameof(habitName));
         }
 
+        if (startDate > DateTime.UtcNow)
+        {
+            throw new ArgumentException("Start date cannot be in the future.", nameof(startDate));
+        }
+
+        if (string.IsNullOrWhiteSpace(category))
+        {
+            throw new ArgumentException($"{nameof(category)} cannot be null or white space", nameof(category));
+        }
+
         Name = habitName;
         StartDate = startDate;
+        Category = category;
     }
 
     /// <summary>
@@ -177,5 +194,21 @@ public class Habit : EntityBase
             previousLog = log;
         }
         return Math.Max(streak, currentStreak);
+    }
+
+    /// <summary>
+    /// Gets all habits in the specified category.
+    /// </summary>
+    /// <param name="habits"></param>
+    /// <param name="category">The category to filter by.</param>
+    /// <returns>A list of habits in the specified category.</returns>
+    public static List<Habit> GetHabitsByCategory(List<Habit> habits, string category)
+    {
+        if (string.IsNullOrWhiteSpace(category))
+        {
+            throw new ArgumentException("Category cannot be null or white space.", nameof(category));
+        }
+
+        return habits.Where(h => h.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 }

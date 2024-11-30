@@ -18,7 +18,7 @@ public class HabitTests
         DateTime startDate = DateTime.UtcNow.Date;
 
         // Act
-        Habit habit = new(habitName, startDate);
+        Habit habit = new(habitName, startDate, "Personal Development");
 
         // Assert
         Assert.Equal(habitName, habit.Name);
@@ -36,7 +36,7 @@ public class HabitTests
         DateTime startDate = DateTime.UtcNow.Date;
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => new Habit(habitName!, startDate));
+        Assert.Throws<ArgumentException>(() => new Habit(habitName!, startDate, "Personal Development"));
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class HabitTests
         // Act
 
         // Assert
-        Assert.Throws<ArgumentException>(() => new Habit(habitName, startDate));
+        Assert.Throws<ArgumentException>(() => new Habit(habitName, startDate, "Personal Development"));
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class HabitTests
     public void AddProgressLog_ValidProgressLog_AddsLog()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         ProgressLog progressLog = new(DateTime.UtcNow, true, "Learning C#");
 
         // Act
@@ -80,7 +80,7 @@ public class HabitTests
     public void AddProgressLog_NullLog_ThrowsException()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
 
@@ -95,7 +95,7 @@ public class HabitTests
     public void UpdateProgressLog_WithNewValues_UpdatesLog()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime originalDate = DateTime.UtcNow;
         ProgressLog progressLog = new(originalDate, true, "Learning C#");
         habit.AddProgressLog(progressLog);
@@ -121,7 +121,7 @@ public class HabitTests
     public void UpdateProgressLog_WithModifiedExistingLog_UpdatesLog()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime originalDate = DateTime.UtcNow;
         ProgressLog progressLog = new(originalDate, true, "Learning C#");
         habit.AddProgressLog(progressLog);
@@ -147,7 +147,7 @@ public class HabitTests
     public void UpdateProgressLog_NonExistingLog_DoesNotUpdate()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         ProgressLog progressLog = new(DateTime.UtcNow, true, "Learning C#");
 
         // Act
@@ -170,7 +170,7 @@ public class HabitTests
     public void Frequency_ValidFrequency_SetsFrequency()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         int frequency = 3;
 
         // Act
@@ -187,7 +187,7 @@ public class HabitTests
     public void Frequency_ZeroFrequency_ThrowsException()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
 
@@ -202,7 +202,7 @@ public class HabitTests
     public void ProgressLogs_EmptyList_ReturnsEmptyList()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
         IReadOnlyList<ProgressLog> progressLogs = habit.ProgressLogs;
@@ -218,7 +218,7 @@ public class HabitTests
     public void ProgressLogs_AddedLogs_ReturnsLogs()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         ProgressLog progressLog1 = new(DateTime.UtcNow, true, "Learning C#");
         ProgressLog progressLog2 = new(DateTime.UtcNow.AddDays(-1), false, "Learning .NET");
         habit.AddProgressLog(progressLog1);
@@ -238,7 +238,7 @@ public class HabitTests
     public void GetCompletionRate_NoLogs_ReturnsZero()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
         double completionRate = habit.GetCompletionRate(DateTime.UtcNow.AddDays(-5), DateTime.UtcNow);
@@ -254,7 +254,7 @@ public class HabitTests
     public void GetCompletionRate_StartDateLaterThanEndDate_ThrowsException()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
 
@@ -269,7 +269,7 @@ public class HabitTests
     public void GetCompletionRate_AllLogsCompleted_ReturnsOneHundred()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
         habit.AddProgressLog(new(today, true));
         habit.AddProgressLog(new(today.AddDays(-1), true));
@@ -289,7 +289,7 @@ public class HabitTests
     public void GetCompletionRate_AllLogsNotCompleted_ReturnsZero()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
         habit.AddProgressLog(new(today, false));
         habit.AddProgressLog(new(today.AddDays(-1), false));
@@ -309,7 +309,7 @@ public class HabitTests
     public void GetCompletionRate_MixedLogs_ReturnsCorrectRate()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         DateTime today = DateTime.UtcNow.Date;
 
@@ -333,7 +333,7 @@ public class HabitTests
     public void GetStreak_NoLogs_ReturnsZero()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
 
         // Act
         int streak = habit.GetStreak(DateTime.UtcNow);
@@ -349,7 +349,7 @@ public class HabitTests
     public void GetStreak_AllLogsCompleted_ReturnsStreak()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
 
         habit.AddProgressLog(new(today, true));
@@ -370,7 +370,7 @@ public class HabitTests
     public void GetStreak_AllLogsNotCompleted_ReturnsZero()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
 
         habit.AddProgressLog(new(today, false));
@@ -391,7 +391,7 @@ public class HabitTests
     public void GetStreak_MixedLogs_ReturnsStreak()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
 
         habit.AddProgressLog(new(today, true));
@@ -412,7 +412,7 @@ public class HabitTests
     public void GetStreak_LogsCompleted_ReturnsStreak()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime today = DateTime.UtcNow.Date;
 
         habit.AddProgressLog(new(today, true));
@@ -434,7 +434,7 @@ public class HabitTests
     public void StartDate_ValidStartDate_SetsStartDate()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5).Date);
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5).Date, "Personal Development");
         DateTime newStartDate = DateTime.UtcNow.AddDays(-10).Date;
 
         // Act
@@ -451,12 +451,83 @@ public class HabitTests
     public void StartDate_FutureDate_ThrowsException()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
         DateTime futureDate = DateTime.UtcNow.AddDays(1);
 
         // Act
 
         // Assert
         Assert.Throws<ArgumentException>(() => habit.StartDate = futureDate);
+    }
+
+    /// <summary>
+    /// Tests that the GetHabitsByCategory method returns the correct habits for a given category.
+    /// </summary>
+    [Fact]
+    public void GetHabitsByCategory_ValidCategory_ReturnsHabits()
+    {
+        // Arrange
+        string category = "Personal Development";
+        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), category);
+        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), category);
+        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), "Health");
+
+        // Act
+        List<Habit> habits = Habit.GetHabitsByCategory([habit1, habit2, habit3], category);
+
+        // Assert
+        Assert.Equal(2, habits.Count);
+        Assert.Contains(habit1, habits);
+        Assert.Contains(habit2, habits);
+    }
+
+    /// <summary>
+    /// Tests that the GetHabitsByCategory method throws an ArgumentException when the category is null.
+    /// </summary>
+    [Fact]
+    public void GetHabitsByCategory_NullCategory_ThrowsException()
+    {
+        // Arrange
+        string category = null!;
+        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
+        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), "Personal Development");
+        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), "Health");
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory([habit1, habit2, habit3], category));
+    }
+
+    /// <summary>
+    /// Tests that the GetHabitsByCategory method throws an ArgumentException when the category is empty.
+    /// </summary>
+    [Fact]
+    public void GetHabitsByCategory_EmptyCategory_ThrowsException()
+    {
+        // Arrange
+        string category = " ";
+        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), "Personal Development");
+        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), "Personal Development");
+        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), "Health");
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByCategory([habit1, habit2, habit3], category));
+    }
+
+    /// <summary>
+    /// Tests that the GetHabitsByCategory method returns an empty list when no habits are provided.
+    /// </summary>
+    [Fact]
+    public void GetHabitsByCategory_EmptyList_ReturnsEmptyList()
+    {
+        // Arrange
+        string category = "Personal Development";
+        // Act
+        List<Habit> habits = Habit.GetHabitsByCategory([], category);
+        // Assert
+        Assert.Empty(habits);
     }
 }
