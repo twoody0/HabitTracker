@@ -15,7 +15,7 @@ public class EntityBaseTests
     {
         // Arrange
         DateTime beforeCreation = DateTime.UtcNow;
-        Habit entity = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.PersonalDevelopment);
+        Habit entity = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
         DateTime afterCreation = DateTime.UtcNow;
 
         // Act
@@ -33,7 +33,7 @@ public class EntityBaseTests
     public void Constructor_InvalidModifiedDate_ThrowsException()
     {
         // Arrange
-        Habit entity = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.PersonalDevelopment);
+        Habit entity = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
 
         // Act
 

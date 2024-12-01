@@ -37,7 +37,8 @@ public class Habit : EntityBase
     }
 
     /// <summary>
-    /// Gets or sets the frequency of the habit.
+    /// Gets or sets the number of frequency units for the habit.
+    /// For example, a value of 2 with FrequencyUnit = Weekly means the habit occurs every 2 weeks.
     /// </summary>
     public int Frequency
     {
@@ -53,6 +54,11 @@ public class Habit : EntityBase
     }
 
     /// <summary>
+    /// Gets or sets the unit of frequency for the habit.
+    /// </summary>
+    public FrequencyUnit FrequencyUnit { get; set; }
+
+    /// <summary>
     /// Gets or sets the progress logs of the habit.
     /// </summary>
     public IReadOnlyList<ProgressLog> ProgressLogs => _progressLogs;
@@ -61,10 +67,11 @@ public class Habit : EntityBase
     /// Initializes a new instance of the <see cref="Habit"/> class.
     /// </summary>
     /// <param name="habitName">The name of the habit.</param>
-    /// <param name="startDate"></param>
-    /// <exception cref="ArgumentException">Thrown when the habit name is null or white space.</exception>
-    /// <param name="category"></param>
-    public Habit(string habitName, DateTime startDate, HabitCategory category = HabitCategory.Other)
+    /// <param name="startDate">The start date of the habit.</param>
+    /// <param name="frequency">The frequency of the habit.</param>
+    /// <param name="frequencyUnit">The frequency unit of the habit.</param>
+    /// <param name="category">The category of the habit.</param>
+    public Habit(string habitName, DateTime startDate, int frequency = 1, FrequencyUnit frequencyUnit = FrequencyUnit.Daily, HabitCategory category = HabitCategory.Other)
     {
         if (string.IsNullOrWhiteSpace(habitName))
         {
@@ -79,6 +86,8 @@ public class Habit : EntityBase
         Name = habitName;
         StartDate = startDate;
         Category = category;
+        Frequency = frequency;
+        FrequencyUnit = frequencyUnit;
     }
 
     /// <summary>
@@ -151,13 +160,14 @@ public class Habit : EntityBase
         DateTime normalizedEndDate = endDate.Date;
 
         int totalDays = (normalizedEndDate - normalizedStartDate).Days + 1;
-        if (totalDays == 0)
+        if (totalDays <= 0 || !_progressLogs.Any(log => log.Date >= normalizedStartDate && log.Date <= normalizedEndDate))
         {
             return 0;
         }
 
-        int completedDays = _progressLogs.Count(log =>
-            log.Date >= normalizedStartDate && log.Date <= normalizedEndDate && log.IsCompleted);
+        int completedDays = _progressLogs
+            .Where(log => log.Date >= normalizedStartDate && log.Date <= normalizedEndDate && log.IsCompleted)
+            .Count();
 
         return (double)completedDays / totalDays * 100;
     }
@@ -170,27 +180,27 @@ public class Habit : EntityBase
     public int GetStreak(DateTime date)
     {
         date = date.Date;
+
+        List<ProgressLog> logs = _progressLogs
+            .Where(log => log.Date <= date && log.IsCompleted)
+            .OrderByDescending(log => log.Date)
+            .ToList();
+
         int streak = 0;
-        int currentStreak = 0;
-        ProgressLog? previousLog = null;
-        foreach (ProgressLog log in _progressLogs.Where(log => log.Date.Date <= date).OrderByDescending(log => log.Date))
+        DateTime? previousDate = null;
+
+        foreach (ProgressLog log in logs)
         {
-            if (previousLog is not null && (previousLog.Date - log.Date).Days > 1)
+            if (previousDate.HasValue && (previousDate.Value - log.Date).Days > 1)
             {
-                break;
+                break; // Streak is broken
             }
-            if (log.IsCompleted)
-            {
-                currentStreak++;
-            }
-            else
-            {
-                streak = Math.Max(streak, currentStreak);
-                currentStreak = 0;
-            }
-            previousLog = log;
+
+            streak++;
+            previousDate = log.Date;
         }
-        return Math.Max(streak, currentStreak);
+
+        return streak;
     }
 
     /// <summary>
