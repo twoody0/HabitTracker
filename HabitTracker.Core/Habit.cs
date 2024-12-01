@@ -147,16 +147,18 @@ public class Habit : EntityBase
             throw new ArgumentException("The start date cannot be later than the end date.", nameof(startDate));
         }
 
-        startDate = startDate.Date;
-        endDate = endDate.Date;
+        DateTime normalizedStartDate = startDate.Date;
+        DateTime normalizedEndDate = endDate.Date;
 
-        int totalDays = (endDate - startDate).Days + 1;
+        int totalDays = (normalizedEndDate - normalizedStartDate).Days + 1;
         if (totalDays == 0)
         {
             return 0;
         }
 
-        int completedDays = _progressLogs.Count(log => log.Date.Date >= startDate && log.Date.Date <= endDate && log.IsCompleted);
+        int completedDays = _progressLogs.Count(log =>
+            log.Date >= normalizedStartDate && log.Date <= normalizedEndDate && log.IsCompleted);
+
         return (double)completedDays / totalDays * 100;
     }
 
