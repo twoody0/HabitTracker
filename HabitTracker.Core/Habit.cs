@@ -16,7 +16,7 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the category of the habit.
     /// </summary>
-    public string Category { get; set; }
+    public HabitCategory Category { get; set; }
 
     private DateTime _startDate;
 
@@ -64,7 +64,7 @@ public class Habit : EntityBase
     /// <param name="startDate"></param>
     /// <exception cref="ArgumentException">Thrown when the habit name is null or white space.</exception>
     /// <param name="category"></param>
-    public Habit(string habitName, DateTime startDate, string category)
+    public Habit(string habitName, DateTime startDate, HabitCategory category = HabitCategory.Other)
     {
         if (string.IsNullOrWhiteSpace(habitName))
         {
@@ -74,11 +74,6 @@ public class Habit : EntityBase
         if (startDate > DateTime.UtcNow)
         {
             throw new ArgumentException("Start date cannot be in the future.", nameof(startDate));
-        }
-
-        if (string.IsNullOrWhiteSpace(category))
-        {
-            throw new ArgumentException($"{nameof(category)} cannot be null or white space", nameof(category));
         }
 
         Name = habitName;
@@ -202,22 +197,8 @@ public class Habit : EntityBase
     /// <param name="habits"></param>
     /// <param name="category">The category to filter by.</param>
     /// <returns>A list of habits in the specified category.</returns>
-    public static List<Habit> GetHabitsByCategory(List<Habit> habits, string category)
+    public static List<Habit> GetHabitsByCategory(List<Habit> habits, HabitCategory category)
     {
-        if (string.IsNullOrWhiteSpace(category))
-        {
-            throw new ArgumentException("Category cannot be null or white space.", nameof(category));
-        }
-
-        return habits.Where(h => h.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+        return habits.Where(h => h.Category == category).ToList();
     }
-
-    //public static List<Habit> GetHabitsByCategory(string category)
-    //{
-    //    if (string.IsNullOrWhiteSpace(category))
-    //    {
-    //        throw new ArgumentException("Category cannot be null or white space.", nameof(category));
-    //    }
-    //    return habits.Where(h => h.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
-    //}
 }
