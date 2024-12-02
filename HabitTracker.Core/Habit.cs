@@ -70,16 +70,16 @@ public class Habit : EntityBase
     /// <summary>
     /// Initializes a new instance of the <see cref="Habit"/> class.
     /// </summary>
-    /// <param name="habitName">The name of the habit.</param>
+    /// <param name="name">The name of the habit.</param>
     /// <param name="startDate">The start date of the habit.</param>
     /// <param name="frequency">The frequency of the habit.</param>
     /// <param name="frequencyUnit">The frequency unit of the habit.</param>
     /// <param name="category">The category of the habit.</param>
-    public Habit(string habitName, DateTime startDate, int frequency = 1, FrequencyUnit frequencyUnit = FrequencyUnit.Daily, HabitCategory category = HabitCategory.Other)
+    public Habit(string name, DateTime startDate, HabitCategory category = HabitCategory.Other, int frequency = 1, FrequencyUnit frequencyUnit = FrequencyUnit.Daily)
     {
-        if (string.IsNullOrWhiteSpace(habitName))
+        if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException($"{nameof(habitName)} cannot be null or white space", nameof(habitName));
+            throw new ArgumentException($"{nameof(name)} cannot be null or white space", nameof(name));
         }
 
         if (startDate > DateTime.UtcNow)
@@ -87,11 +87,13 @@ public class Habit : EntityBase
             throw new ArgumentException("Start date cannot be in the future.", nameof(startDate));
         }
 
-        Name = habitName;
+        Name = name;
         StartDate = startDate;
         Category = category;
         Frequency = frequency;
         FrequencyUnit = frequencyUnit;
+
+        Tags = DefaultTagsProvider.GetTagsForCategory(category);
     }
 
     /// <summary>
