@@ -32,7 +32,7 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the tags associated with the habit.
     /// </summary>
-    public List<string> Tags { get; set; } = [];
+    public List<string> Tags { get; set; } = ["General"];
 
     /// <summary>
     /// Gets or sets the start date of the habit.
@@ -237,5 +237,13 @@ public class Habit : EntityBase
             FrequencyUnit.Monthly => lastCompletedDate.AddMonths(Frequency),
             _ => throw new NotImplementedException("Unsupported frequency unit.")
         };
+    }
+
+    /// <summary>
+    /// Gets all habits with a specific tag.
+    /// </summary>
+    public static List<Habit> GetHabitsByTag(List<Habit> habits, string tag)
+    {
+        return habits.Where(h => h.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase)).ToList();
     }
 }
