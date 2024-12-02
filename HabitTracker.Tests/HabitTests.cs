@@ -604,4 +604,51 @@ public class HabitTests
         Assert.Throws<ArgumentException>(() => Habit.GetHabitsByTag([habit1], null!));
         Assert.Throws<ArgumentException>(() => Habit.GetHabitsByTag([habit1], " "));
     }
+
+    /// <summary>
+    /// Tests that adding a valid tag to the habit adds the tag.
+    /// </summary>
+    [Fact]
+    public void AddTag_ValidTag_AddsTag()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+
+        // Act
+        habit.AddTag("Programming");
+
+        // Assert
+        Assert.Contains("Programming", habit.Tags);
+    }
+
+    /// <summary>
+    /// Tests that adding a duplicate tag does not add the tag again.
+    /// </summary>
+    [Fact]
+    public void AddTag_DuplicateTag_DoesNotAddTag()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        habit.AddTag("Programming");
+
+        // Act
+        habit.AddTag("Programming");
+
+        // Assert
+        Assert.Contains("Programming", habit.Tags);
+    }
+
+    /// <summary>
+    /// Tests that adding an invalid tag throws an ArgumentException.
+    /// </summary>
+    [Fact]
+    public void AddTag_InvalidTag_ThrowsException()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        // Act
+        // Assert
+        Assert.Throws<ArgumentException>(() => habit.AddTag(null!));
+        Assert.Throws<ArgumentException>(() => habit.AddTag(" "));
+    }
 }
