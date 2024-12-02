@@ -612,7 +612,7 @@ public class HabitTests
     public void AddTag_ValidTag_AddsTag()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.Hobbies);
 
         // Act
         habit.AddTag("Programming");
@@ -628,7 +628,7 @@ public class HabitTests
     public void AddTag_DuplicateTag_DoesNotAddTag()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.Hobbies);
         habit.AddTag("Programming");
 
         // Act
@@ -645,7 +645,7 @@ public class HabitTests
     public void AddTag_InvalidTag_ThrowsException()
     {
         // Arrange
-        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5));
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.Hobbies);
         // Act
         // Assert
         Assert.Throws<ArgumentException>(() => habit.AddTag(null!));
