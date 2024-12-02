@@ -7,6 +7,12 @@ public class Habit : EntityBase
 {
     private readonly List<ProgressLog> _progressLogs = [];
     private int _frequency;
+    private DateTime _startDate;
+
+    /// <summary>
+    /// Gets or sets the progress logs of the habit.
+    /// </summary>
+    public IReadOnlyList<ProgressLog> ProgressLogs => _progressLogs;
 
     /// <summary>
     /// Gets or sets the name of the habit.
@@ -18,7 +24,15 @@ public class Habit : EntityBase
     /// </summary>
     public HabitCategory Category { get; set; }
 
-    private DateTime _startDate;
+    /// <summary>
+    /// Gets or sets the unit of frequency for the habit.
+    /// </summary>
+    public FrequencyUnit FrequencyUnit { get; set; }
+
+    /// <summary>
+    /// Gets or sets the tags associated with the habit.
+    /// </summary>
+    public List<string> Tags { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the start date of the habit.
@@ -52,16 +66,6 @@ public class Habit : EntityBase
             _frequency = value;
         }
     }
-
-    /// <summary>
-    /// Gets or sets the unit of frequency for the habit.
-    /// </summary>
-    public FrequencyUnit FrequencyUnit { get; set; }
-
-    /// <summary>
-    /// Gets or sets the progress logs of the habit.
-    /// </summary>
-    public IReadOnlyList<ProgressLog> ProgressLogs => _progressLogs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Habit"/> class.
@@ -212,5 +216,26 @@ public class Habit : EntityBase
     public static List<Habit> GetHabitsByCategory(List<Habit> habits, HabitCategory category)
     {
         return habits.Where(h => h.Category == category).ToList();
+    }
+
+    /// <summary>
+    /// Gets the next due date for the habit based on the frequency and frequency unit.
+    /// </summary>
+    /// <param name="lastCompletedDate">The date the habit was last completed.</param>
+    /// <returns>The next due date for the habit.</returns>
+    public DateTime GetNextDueDate(DateTime lastCompletedDate)
+    {
+        if (lastCompletedDate < StartDate)
+        {
+            throw new ArgumentException($"The last completed date ({lastCompletedDate:yyyy-MM-dd}) cannot be earlier than the start date ({StartDate:yyyy-MM-dd}).", nameof(lastCompletedDate));
+        }
+
+        return FrequencyUnit switch
+        {
+            FrequencyUnit.Daily => lastCompletedDate.AddDays(Frequency),
+            FrequencyUnit.Weekly => lastCompletedDate.AddDays(Frequency * 7),
+            FrequencyUnit.Monthly => lastCompletedDate.AddMonths(Frequency),
+            _ => throw new NotImplementedException("Unsupported frequency unit.")
+        };
     }
 }

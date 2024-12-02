@@ -501,4 +501,71 @@ public class HabitTests
         Assert.Contains(habit1, habits);
         Assert.Contains(habit2, habits);
     }
+
+    /// <summary>
+    /// Tests that the GetNextDueDate method returns the correct next due date for a daily frequency.
+    /// </summary>
+    [Fact]
+    public void GetNextDueDate_DailyFrequency_ReturnsNextDueDate()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
+        DateTime lastCompletedDate = DateTime.UtcNow.AddDays(-2);
+
+        // Act
+        DateTime nextDueDate = habit.GetNextDueDate(lastCompletedDate);
+
+        // Assert
+        Assert.Equal(lastCompletedDate.AddDays(1), nextDueDate);
+    }
+
+    /// <summary>
+    /// Tests that the GetNextDueDate method returns the correct next due date for a weekly frequency.
+    /// </summary>
+    [Fact]
+    public void GetNextDueDate_WeeklyFrequency_ReturnsNextDueDate()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-15), 1, FrequencyUnit.Weekly, HabitCategory.PersonalDevelopment);
+        DateTime lastCompletedDate = DateTime.UtcNow.AddDays(-14);
+
+        // Act
+        DateTime nextDueDate = habit.GetNextDueDate(lastCompletedDate);
+
+        // Assert
+        Assert.Equal(lastCompletedDate.AddDays(7), nextDueDate);
+    }
+
+    /// <summary>
+    /// Tests that the GetNextDueDate method returns the correct next due date for a monthly frequency.
+    /// </summary>
+    [Fact]
+    public void GetNextDueDate_MonthlyFrequency_ReturnsNextDueDate()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddMonths(-5), 1, FrequencyUnit.Monthly, HabitCategory.PersonalDevelopment);
+        DateTime lastCompletedDate = DateTime.UtcNow.AddMonths(-1);
+
+        // Act
+        DateTime nextDueDate = habit.GetNextDueDate(lastCompletedDate);
+
+        // Assert
+        Assert.Equal(lastCompletedDate.AddMonths(1), nextDueDate);
+    }
+
+    /// <summary>
+    /// Tests that the GetNextDueDate method throws an ArgumentException when the last completed date is earlier than the start date.
+    /// </summary>
+    [Fact]
+    public void GetNextDueDate_LastCompletedDateEarlierThanStartDate_ThrowsException()
+    {
+        // Arrange
+        Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
+        DateTime lastCompletedDate = DateTime.UtcNow.AddDays(-10);
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => habit.GetNextDueDate(lastCompletedDate));
+    }
 }
