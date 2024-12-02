@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HabitTracker.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HabitTracker.Core.Data;
 
@@ -7,4 +8,36 @@ namespace HabitTracker.Core.Data;
 /// </summary>
 public class HabitTrackerDbContext : DbContext
 {
+    /// <summary>
+    /// Gets or sets the collection of habits.
+    /// </summary>
+    public DbSet<Habit> Habits { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of progress logs.
+    /// </summary>
+    public DbSet<ProgressLog> ProgressLogs { get; set; }
+
+    /// <summary>
+    /// Configures the database options for the context.
+    /// </summary>
+    /// <param name="optionsBuilder">The options builder to be configured.</param>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=habittracker.db");
+    }
+
+    /// <summary>
+    /// Configures the model for the context.
+    /// </summary>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Habit>()
+            .HasMany(h => h.ProgressLogs)
+            .WithOne()
+            .HasForeignKey(pl => pl.HabitId);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
