@@ -611,4 +611,20 @@ public class HabitTests
         Assert.Contains(habit2, habits);
         Assert.Contains(habit3, habits);
     }
+
+    /// <summary>
+    /// Tests that the GetHabitsByTag method throws an ArgumentException when an invalid tag is provided.
+    /// </summary>
+    [Fact]
+    public void GetHabitsByTag_InvalidTag_ThrowsException()
+    {
+        // Arrange
+        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
+
+        // Act
+
+        // Assert
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByTag([habit1], null!));
+        Assert.Throws<ArgumentException>(() => Habit.GetHabitsByTag([habit1], " "));
+    }
 }

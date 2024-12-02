@@ -242,8 +242,21 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets all habits with a specific tag.
     /// </summary>
+    /// <param name="habits">The list of habits to search.</param>
+    /// <param name="tag">The tag to filter by.</param>
+    /// <returns>A list of habits with the specified tag.</returns>
     public static List<Habit> GetHabitsByTag(List<Habit> habits, string tag)
     {
+        if (habits == null || habits.Count == 0)
+        {
+            return [];
+        }
+
+        if (string.IsNullOrWhiteSpace(tag))
+        {
+            throw new ArgumentException("Tag cannot be null or empty.", nameof(tag));
+        }
+
         return habits.Where(h => h.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase)).ToList();
     }
 }
