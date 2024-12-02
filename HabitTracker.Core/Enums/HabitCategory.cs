@@ -1,4 +1,4 @@
-﻿namespace HabitTracker.Core;
+﻿namespace HabitTracker.Core.Enums;
 
 /// <summary>
 /// Represents the category of a habit.

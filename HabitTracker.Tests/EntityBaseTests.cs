@@ -1,4 +1,5 @@
 using HabitTracker.Core;
+using HabitTracker.Core.Entities;
 
 namespace HabitTracker.Tests;
 

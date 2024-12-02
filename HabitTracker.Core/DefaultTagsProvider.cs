@@ -1,4 +1,6 @@
-﻿namespace HabitTracker.Core;
+﻿using HabitTracker.Core.Enums;
+
+namespace HabitTracker.Core;
 
 /// <summary>
 /// Provides default tags for different habit categories.

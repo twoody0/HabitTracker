@@ -1,4 +1,6 @@
-﻿namespace HabitTracker.Core;
+﻿using HabitTracker.Core.Enums;
+
+namespace HabitTracker.Core.Entities;
 
 /// <summary>
 /// Represents a habit that can be tracked.

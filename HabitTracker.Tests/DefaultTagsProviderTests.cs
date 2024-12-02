@@ -1,4 +1,6 @@
 ﻿using HabitTracker.Core;
+using HabitTracker.Core.Entities;
+using HabitTracker.Core.Enums;
 
 namespace HabitTracker.Tests;
 
