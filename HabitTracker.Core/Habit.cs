@@ -32,7 +32,7 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the tags associated with the habit.
     /// </summary>
-    public List<string> Tags { get; set; } = ["General"];
+    public List<string> Tags { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the start date of the habit.
@@ -258,5 +258,22 @@ public class Habit : EntityBase
         }
 
         return habits.Where(h => h.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase)).ToList();
+    }
+
+    /// <summary>
+    /// Adds a tag to the habit.
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void AddTag(string tag)
+    {
+        if (string.IsNullOrWhiteSpace(tag))
+        {
+            throw new ArgumentException("Tag cannot be null or empty.", nameof(tag));
+        }
+        if (!Tags.Contains(tag, StringComparer.OrdinalIgnoreCase))
+        {
+            Tags.Add(tag);
+        }
     }
 }

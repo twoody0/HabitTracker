@@ -18,7 +18,7 @@ public class HabitTests
         DateTime startDate = DateTime.UtcNow.Date;
 
         // Act
-        Habit habit = new(habitName, startDate, 1, FrequencyUnit.Daily, HabitCategory.Health);
+        Habit habit = new(habitName, startDate, 1, FrequencyUnit.Daily, HabitCategory.Wellness);
 
         // Assert
         Assert.Equal(habitName, habit.Name);
@@ -491,7 +491,7 @@ public class HabitTests
         HabitCategory category = HabitCategory.PersonalDevelopment;
         Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, category);
         Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, category);
-        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.Health);
+        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.Wellness);
 
         // Act
         List<Habit> habits = Habit.GetHabitsByCategory([habit1, habit2, habit3], category);
@@ -577,11 +577,11 @@ public class HabitTests
     {
         // Arrange
         Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
-        habit1.Tags.Add("Programming");
+        habit1.AddTag("Programming");
         Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
-        habit2.Tags.Add("Books");
-        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.Health);
-        habit3.Tags.Add("Fitness");
+        habit2.AddTag("Books");
+        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.Wellness);
+        habit3.AddTag("Fitness");
 
         // Act
         List<Habit> habits = Habit.GetHabitsByTag([habit1, habit2, habit3], "Books");
@@ -589,27 +589,6 @@ public class HabitTests
         // Assert
         Assert.Single(habits);
         Assert.Contains(habit2, habits);
-    }
-
-    /// <summary>
-    /// Tests that the GetHabitsByTag method returns the correct habits for a general tag.
-    /// </summary>
-    [Fact]
-    public void GetHabitsByTag_DefaultGeneralTag_ReturnsGeneralHabits()
-    {
-        // Arrange
-        Habit habit1 = new("Coding", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
-        Habit habit2 = new("Reading", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.PersonalDevelopment);
-        Habit habit3 = new("Exercise", DateTime.UtcNow.AddDays(-5), 1, FrequencyUnit.Daily, HabitCategory.Health);
-
-        // Act
-        List<Habit> habits = Habit.GetHabitsByTag([habit1, habit2, habit3], "General");
-
-        // Assert
-        Assert.Equal(3, habits.Count);
-        Assert.Contains(habit1, habits);
-        Assert.Contains(habit2, habits);
-        Assert.Contains(habit3, habits);
     }
 
     /// <summary>

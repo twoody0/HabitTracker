@@ -6,14 +6,14 @@
 public enum HabitCategory
 {
     /// <summary>
-    /// Habits related to health.
+    /// Habits related to Wellness.
     /// </summary>
-    Health,
+    Wellness,
 
     /// <summary>
-    /// Habits related to work.
+    /// Habits related to Productivity.
     /// </summary>
-    Work,
+    Productivity,
 
     /// <summary>
     /// Habits related to personal development.
@@ -21,9 +21,24 @@ public enum HabitCategory
     PersonalDevelopment,
 
     /// <summary>
-    /// Habits related to fitness.
+    /// Habits related to hobbies.
     /// </summary>
-    Fitness,
+    Hobbies,
+
+    /// <summary>
+    /// Habits related to relationships.
+    /// </summary>
+    Relationships,
+
+    /// <summary>
+    /// Habits related to finance.
+    /// </summary>
+    Finance,
+
+    /// <summary>
+    /// Habits related to spirituality.
+    /// </summary>
+    Spirituality,
 
     /// <summary>
     /// Other types of habits.
