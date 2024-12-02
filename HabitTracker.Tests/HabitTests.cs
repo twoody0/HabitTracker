@@ -646,7 +646,9 @@ public class HabitTests
     {
         // Arrange
         Habit habit = new("Coding", DateTime.UtcNow.AddDays(-5), HabitCategory.Hobbies);
+
         // Act
+
         // Assert
         Assert.Throws<ArgumentException>(() => habit.AddTag(null!));
         Assert.Throws<ArgumentException>(() => habit.AddTag(" "));

@@ -1,4 +1,7 @@
-﻿namespace HabitTracker.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HabitTracker.Core;
 
 /// <summary>
 /// Represents the base entity with common properties.
@@ -10,9 +13,8 @@ public abstract class EntityBase
     /// <summary>
     /// Initializes a new instance of the <see cref="EntityBase"/> class.
     /// </summary>
-    public EntityBase()
+    protected EntityBase()
     {
-        Id = Guid.NewGuid();
         CreatedDate = DateTime.UtcNow;
         ModifiedDate = DateTime.UtcNow;
     }
@@ -20,7 +22,9 @@ public abstract class EntityBase
     /// <summary>
     /// Gets the unique identifier for the entity.
     /// </summary>
-    public Guid Id { get; init; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
     /// <summary>
     /// Gets the creation date of the entity.

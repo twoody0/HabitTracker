@@ -23,7 +23,7 @@ public class EntityBaseTests
         // Assert
         Assert.InRange(entity.CreatedDate, beforeCreation, afterCreation);
         Assert.InRange(entity.ModifiedDate, beforeCreation, afterCreation);
-        Assert.NotEqual(Guid.Empty, entity.Id);
+        Assert.NotEqual(0, entity.Id);
     }
 
     /// <summary>

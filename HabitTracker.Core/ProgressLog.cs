@@ -1,4 +1,6 @@
-﻿namespace HabitTracker.Core;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HabitTracker.Core;
 
 /// <summary>
 /// Represents a progress log for a habit.
@@ -12,7 +14,7 @@ public class ProgressLog : EntityBase
     /// <param name="isCompleted">Indicates whether the habit was completed on this date.</param>
     /// <param name="note">An optional note for the progress log entry.</param>
     /// <exception cref="ArgumentException">Thrown when the date is in the future.</exception>
-    public ProgressLog(DateTime date, bool isCompleted, string? note)
+    public ProgressLog(DateTime date, bool isCompleted, string? note = null)
     {
         if (date > DateTime.UtcNow)
         {
@@ -21,15 +23,6 @@ public class ProgressLog : EntityBase
         Date = date;
         IsCompleted = isCompleted;
         Note = note;
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProgressLog"/> class with the specified date and completion status.
-    /// </summary>
-    /// <param name="date">The date of the progress log entry.</param>
-    /// <param name="isCompleted">Indicates whether the habit was completed on this date.</param>
-    public ProgressLog(DateTime date, bool isCompleted) : this(date, isCompleted, null)
-    {
     }
 
     /// <summary>
@@ -46,4 +39,10 @@ public class ProgressLog : EntityBase
     /// Gets or sets an optional note for the progress log entry.
     /// </summary>
     public string? Note { get; set; }
+
+    /// <summary>
+    /// Gets or sets the HabitId, which is the foreign key to the Habit entity.
+    /// </summary>
+    [ForeignKey("Habit")]
+    public int HabitId { get; set; }
 }
