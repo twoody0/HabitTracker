@@ -40,7 +40,7 @@ public class Application : IDisposable
     {
         while (true)
         {
-            Console.WriteLine("\nSelect an option:");
+            Console.WriteLine($"{Environment.NewLine}Select an option:");
             Console.WriteLine("1. View all habits");
             Console.WriteLine("2. Add a new habit");
             Console.WriteLine("3. Exit");
