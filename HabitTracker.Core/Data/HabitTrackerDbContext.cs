@@ -19,6 +19,15 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
     public DbSet<ProgressLog> ProgressLogs { get; set; }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="HabitTrackerDbContext"/> class.
+    /// </summary>
+    public HabitTrackerDbContext() : this(new DbContextOptionsBuilder<HabitTrackerDbContext>()
+        .UseSqlite("Data Source=habittracker.db")
+        .Options)
+    {
+    }
+
+    /// <summary>
     /// Configures the model for the context.
     /// </summary>
     /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
