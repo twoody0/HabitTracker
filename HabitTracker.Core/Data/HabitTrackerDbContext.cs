@@ -6,7 +6,7 @@ namespace HabitTracker.Core.Data;
 /// <summary>
 /// Represents the database context for the Habit Tracker application.
 /// </summary>
-public class HabitTrackerDbContext : DbContext
+public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> options) : DbContext(options)
 {
     /// <summary>
     /// Gets or sets the collection of habits.
@@ -17,15 +17,6 @@ public class HabitTrackerDbContext : DbContext
     /// Gets or sets the collection of progress logs.
     /// </summary>
     public DbSet<ProgressLog> ProgressLogs { get; set; }
-
-    /// <summary>
-    /// Configures the database options for the context.
-    /// </summary>
-    /// <param name="optionsBuilder">The options builder to be configured.</param>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source=habittracker.db");
-    }
 
     /// <summary>
     /// Configures the model for the context.

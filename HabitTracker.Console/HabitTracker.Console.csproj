@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\HabitTracker.Core\HabitTracker.Core.csproj" />
+  </ItemGroup>
+</Project>
