@@ -24,7 +24,7 @@ public abstract class EntityBase
     /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int Id { get; protected set; }
 
     /// <summary>
     /// Gets the creation date of the entity.

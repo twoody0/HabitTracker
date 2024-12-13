@@ -20,15 +20,17 @@ public class HabitTrackerDbContextTests
     /// <summary>
     /// Tests if a habit can be added and retrieved from the database.
     /// </summary>
-    [Fact]
-    public void CanAddAndRetrieveHabit()
+    [Theory]
+    [InlineData("Learn C#", HabitCategory.PersonalDevelopment)]
+    [InlineData("Exercise", HabitCategory.Wellness)]
+    public void CanAddAndRetrieveHabit(string name, HabitCategory category)
     {
         // Arrange
         DbContextOptions<HabitTrackerDbContext> options = CreateInMemoryOptions();
 
         using (HabitTrackerDbContext context = new(options))
         {
-            Habit habit = new("Learn C#", DateTime.UtcNow, HabitCategory.PersonalDevelopment, 1, FrequencyUnit.Daily);
+            Habit habit = new(name, DateTime.UtcNow, category);
             context.Habits.Add(habit);
             context.SaveChanges();
         }
@@ -36,12 +38,13 @@ public class HabitTrackerDbContextTests
         // Act
         using (HabitTrackerDbContext context = new(options))
         {
-            Habit? retrievedHabit = context.Habits.FirstOrDefault(h => h.Name == "Learn C#");
+            Habit? retrievedHabit = context.Habits.FirstOrDefault(h => h.Name == name);
 
             // Assert
             Assert.NotNull(retrievedHabit);
-            Assert.Equal("Learn C#", retrievedHabit.Name);
-            Assert.Equal(HabitCategory.PersonalDevelopment, retrievedHabit.Category);
+            Assert.Equal(name, retrievedHabit!.Name);
+            Assert.Equal(category, retrievedHabit.Category);
+            Assert.True(retrievedHabit.Id > 0);
         }
     }
 }
