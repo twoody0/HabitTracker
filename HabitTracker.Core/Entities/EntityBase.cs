@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HabitTracker.Core;
+namespace HabitTracker.Core.Entities;
 
 /// <summary>
 /// Represents the base entity with common properties.
