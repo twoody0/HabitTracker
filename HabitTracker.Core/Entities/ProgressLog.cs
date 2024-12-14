@@ -27,6 +27,12 @@ public class ProgressLog : EntityBase
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="ProgressLog"/> class.
+    /// </summary>
+    public ProgressLog()
+    { }
+
+    /// <summary>
     /// Gets the date of the progress log entry.
     /// </summary>
     public DateTime Date { get; init; }

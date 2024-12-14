@@ -99,6 +99,14 @@ public class Habit : EntityBase
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Habit"/> class.
+    /// </summary>
+    public Habit()
+    {
+        Name = string.Empty;
+    }
+
+    /// <summary>
     /// Adds a progress log to the habit.
     /// </summary>
     /// <param name="progressLog">The progress log to add.</param>
