@@ -36,9 +36,13 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
     {
         base.OnModelCreating(modelBuilder);
 
-        // Seed Habits
+        modelBuilder.Entity<Habit>()
+            .Property(h => h.Tags)
+            .HasConversion(new StringListConverter());
+
+        // Seed Data
         modelBuilder.Entity<Habit>().HasData(
-            new Habit("Daily Exercise", new DateTime(2024, 6, 3))
+            new Habit
             {
                 Id = 1,
                 Name = "Daily Exercise",
@@ -50,13 +54,14 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
             },
-            new Habit("Read books", new DateTime(2024, 1, 1))
+            new Habit
             {
                 Id = 2,
                 Name = "Read Books",
                 Category = HabitCategory.PersonalDevelopment,
                 FrequencyUnit = FrequencyUnit.Weekly,
-                Tags = new List<string> { "reading", "books", "learning" },
+                Tags = new List<string> { "reading", "learning" },
+                StartDate = new DateTime(2024, 1, 1),
                 Frequency = 1,
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
@@ -65,18 +70,22 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
 
         // Seed ProgressLogs
         modelBuilder.Entity<ProgressLog>().HasData(
-            new ProgressLog(new DateTime(2024, 1, 2), true)
+            new ProgressLog
             {
                 Id = 1,
                 HabitId = 1,
+                Date = new DateTime(2024, 1, 2),
+                IsCompleted = true,
                 Note = "Ran 3 miles",
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
             },
-            new ProgressLog(new DateTime(2024, 1, 3), true)
+            new ProgressLog
             {
                 Id = 2,
                 HabitId = 2,
+                Date = new DateTime(2024, 1, 3),
+                IsCompleted = true,
                 Note = "Finished 2 chapters",
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
