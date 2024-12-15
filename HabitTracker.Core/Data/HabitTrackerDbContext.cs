@@ -36,31 +36,27 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Habit>()
-            .Property(h => h.Tags)
-            .HasConversion(new StringListConverter());
-
-        // Seed Data
+        // Seed without Tags
         modelBuilder.Entity<Habit>().HasData(
-            new Habit
+            new
             {
                 Id = 1,
                 Name = "Daily Exercise",
                 Category = HabitCategory.PersonalDevelopment,
                 FrequencyUnit = FrequencyUnit.Daily,
-                Tags = new List<string> { "exercise", "fitness", "health" },
+                Tags = "",
                 StartDate = new DateTime(2024, 1, 1),
                 Frequency = 1,
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
             },
-            new Habit
+            new
             {
                 Id = 2,
                 Name = "Read Books",
                 Category = HabitCategory.PersonalDevelopment,
                 FrequencyUnit = FrequencyUnit.Weekly,
-                Tags = new List<string> { "reading", "learning" },
+                Tags = "",
                 StartDate = new DateTime(2024, 1, 1),
                 Frequency = 1,
                 CreatedDate = DateTime.UtcNow,
@@ -68,9 +64,8 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
             }
         );
 
-        // Seed ProgressLogs
         modelBuilder.Entity<ProgressLog>().HasData(
-            new ProgressLog
+            new
             {
                 Id = 1,
                 HabitId = 1,
@@ -80,7 +75,7 @@ public class HabitTrackerDbContext(DbContextOptions<HabitTrackerDbContext> optio
                 CreatedDate = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow
             },
-            new ProgressLog
+            new
             {
                 Id = 2,
                 HabitId = 2,

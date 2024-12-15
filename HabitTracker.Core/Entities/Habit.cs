@@ -9,6 +9,7 @@ public class Habit : EntityBase
 {
     private readonly List<ProgressLog> _progressLogs = [];
     private int _frequency;
+    private string _tags = string.Empty;
     private DateTime _startDate;
 
     /// <summary>
@@ -34,7 +35,15 @@ public class Habit : EntityBase
     /// <summary>
     /// Gets or sets the tags associated with the habit.
     /// </summary>
-    public List<string> Tags { get; set; } = [];
+    public List<string> Tags
+    {
+        get => string.IsNullOrEmpty(_tags)
+            ? new List<string>()
+            : _tags.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+        set => _tags = value is null || value.Count == 0
+            ? string.Empty
+            : string.Join(",", value);
+    }
 
     /// <summary>
     /// Gets or sets the start date of the habit.

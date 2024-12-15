@@ -45,13 +45,39 @@ namespace HabitTracker.Core.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.PrimitiveCollection<string>("Tags")
+                    b.Property<string>("Tags")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Habits");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = 2,
+                            CreatedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(2189),
+                            Frequency = 1,
+                            FrequencyUnit = 0,
+                            ModifiedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(2191),
+                            Name = "Daily Exercise",
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Tags = "exercise,fitness,health"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = 2,
+                            CreatedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(2213),
+                            Frequency = 1,
+                            FrequencyUnit = 1,
+                            ModifiedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(2213),
+                            Name = "Read Books",
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Tags = "reading,learning"
+                        });
                 });
 
             modelBuilder.Entity("HabitTracker.Core.ProgressLog", b =>
@@ -83,6 +109,28 @@ namespace HabitTracker.Core.Migrations
                     b.HasIndex("HabitId");
 
                     b.ToTable("ProgressLogs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(7389),
+                            Date = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 1,
+                            IsCompleted = true,
+                            ModifiedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(7390),
+                            Note = "Ran 3 miles"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(7394),
+                            Date = new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HabitId = 2,
+                            IsCompleted = true,
+                            ModifiedDate = new DateTime(2024, 12, 15, 0, 21, 15, 671, DateTimeKind.Utc).AddTicks(7394),
+                            Note = "Finished 2 chapters"
+                        });
                 });
 
             modelBuilder.Entity("HabitTracker.Core.ProgressLog", b =>
